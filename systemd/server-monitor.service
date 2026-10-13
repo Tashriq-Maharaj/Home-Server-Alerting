@@ -1,0 +1,26 @@
+[Unit]
+Description=Ubuntu Server Real-Time Monitoring & Alerting Service
+After=network.target docker.service
+Wants=docker.service
+
+[Service]
+Type=simple
+User=rick
+Group=rick
+SupplementaryGroups=docker
+WorkingDirectory=/home/rick/Coding/Server_Alerting
+EnvironmentFile=-/home/rick/Coding/Server_Alerting/.env
+ExecStart=/home/rick/Coding/Server_Alerting/.venv/bin/python /home/rick/Coding/Server_Alerting/main.py
+
+# Restart policy
+Restart=always
+RestartSec=5s
+TimeoutStopSec=10s
+
+# Logging redirected to systemd journal
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=server-monitor
+
+[Install]
+WantedBy=multi-user.target
